@@ -151,6 +151,8 @@ int main(int argc, char *argv[])
 {
     printf("pid: %d\n", getpid());
 
+    syslog(LOG_INFO, "Запуск программы демона!");
+
     int err;
     pthread_t tid;
     char *cmd;
@@ -169,6 +171,8 @@ int main(int argc, char *argv[])
         syslog(LOG_ERR, "Демон уже запущен!\n");
         exit(1);
     }
+    else
+        syslog(LOG_INFO, "Переход в режим демона!");
 
     // Установка обработчика сигналов
     sa.sa_handler = sigterm;
@@ -190,15 +194,13 @@ int main(int argc, char *argv[])
         perror("Невозможно перехватить сигнал sighup!\n");
         exit(1);
     }
+    syslog(LOG_INFO, "Установлена обрабка сигналов SIGHUP и SIGTERM");
 
-    syslog(LOG_WARNING, "Проверка пройдена!");
-
-    
     err = pthread_create(&tid, NULL, thr_fn, 0);
     if (err != 0)
         perror("Невозможно создать поток!\n");
 
-    syslog(LOG_INFO, "Thread was created.");
+    syslog(LOG_INFO, "Демон запущен");
     
     err = pthread_join(tid, NULL);
     if (err != 0)
