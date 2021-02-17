@@ -9,6 +9,7 @@
 #include <string.h> 
 #include <errno.h> 
 #include <sys/file.h>
+#include <pthread.h>
 
 #define LOCKFILE "/var/run/daemon.pid"
 #define LOCKMODE (S_IRUSR | S_IWUSR | S_IRGRP | S_IROTH) 
@@ -105,23 +106,87 @@ void daemonize(const char *cmd)
         syslog(LOG_ERR, "ошибочные файловые дескрипторы %d %d %d\n", fd0, fd1, fd2);
         exit(1);
     }
+}
 
-    syslog(LOG_WARNING, "Демон запущен!");
+void *thr_fn(void *arg)
+{
+    int err, signo;
+
+    for (;;)
+    {
+        err = sigwait(&mask, &signo);
+        if (err != 0)
+        {
+            syslog(LOG_ERR, "Ошибка вызова функции sigwait");
+            exit(1);
+        }
+        switch (signo)
+        {
+        case SIGHUP:
+            syslog(LOG_INFO, getlogin())
+            break;
+        case SIGTERM:
+            syslog(LOG_INFO, "Получен сигнал SIGTERM, выход");
+            exit(0)
+        default:
+            syslog(LOG_INFO, "Получен непредвиденный сигнал %d \n", signo);
+        }
+    }
+    return(0);
 }
 
 int main() 
 {
-    daemonize("hello");
-    // 9. Блокировка файла для одной существующей копии демона 
+    int err;
+    pthread_t tid;
+    char *cmd;
+    struct sigaction sa;
+
+    if ((cmd = strrchar(argv[0], '/')) == NULL)
+        cmd = argv[0];
+    else
+        cmd++;
+
+    // Переход в режим демона
+    daemonize(cmd);
+    // Блокировка файла для одной существующей копии демона 
     if (already_running() != 0)
     {
         syslog(LOG_ERR, "Демон уже запущен!\n");
         exit(1);
     }
 
+    // Установка обработчика сигналов
+    sa.sa_handler = sigterm;
+    sigemptyset(&sa.sa_mask);
+    sigaddset(&sa.sa_mask, SIGTERM);
+    sa.sa_flags = 0;
+    if (sigaction(SIGTERM, &sa, NULL) < 0)
+    {
+        perror(err, "Невозможно перехватить сигнал sigterm!\n");
+        exit(1);
+    }
+
+    sa.sa_handler = sighup;
+    sigemptyset(&sa.sa_mask);
+    sigaddset(&sa.sa_mask, SIGTERM);
+    sa.sa_flags = 0;
+    if (sigaction(SIGHUP, &sa, NULL) < 0)
+    {
+        perror(err, "Невозможно перехватить сигнал sighup!\n");
+        exit(1);
+    }
+
     syslog(LOG_WARNING, "Проверка пройдена!");
 
-    syslog(LOG_INFO, getlogin())
-    syslog(LOG_INFO, getlogin())
-    syslog(LOG_INFO, getlogin())
+    
+    err = pthread_create(&tid, NULL, thr_fn, 0);
+    if (err != 0)
+        perror(err, "Невозможно создать поток!\n");
+    
+    err = pthread_join(tid, NULL);
+    if (err != 0)
+        perror(err, "Невозможно присоединить поток!\n");
+    
+    return(0);
 }
