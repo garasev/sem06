@@ -11,7 +11,7 @@
 #include <sys/file.h>
 #include <pthread.h>
 
-#define LOCKFILE "/var/run/daemon.pid"
+#define LOCKFILE "home/garasev/sem06/OS/lab01/daemon.pid"
 #define LOCKMODE (S_IRUSR | S_IWUSR | S_IRGRP | S_IROTH) 
 
 sigset_t mask;
@@ -53,7 +53,7 @@ int already_running(void)
     ftruncate(fd, 0);
     sprintf(buf, "%ld", (long)getpid());
     write(fd, buf, strlen(buf) + 1);
-
+    return(0);
 }
 
 void daemonize(const char *cmd)
@@ -75,9 +75,9 @@ void daemonize(const char *cmd)
         perror("Ошибка функции fork!\n");
     else if (pid != 0) //родительский процесс
         exit(0);
-    printf("pid: %d", getpid());
+
     setsid();
-    printf("pid: %d", getpid());
+
     // 4) Обеспечить возможность обретения управляющего терминала в будущем
     sa.sa_handler = SIG_IGN;
     sigemptyset(&sa.sa_mask);
@@ -149,6 +149,8 @@ void sigterm(int signo)
 
 int main(int argc, char *argv[]) 
 {
+    printf("pid: %d\n", getpid());
+
     int err;
     pthread_t tid;
     char *cmd;
@@ -195,6 +197,8 @@ int main(int argc, char *argv[])
     err = pthread_create(&tid, NULL, thr_fn, 0);
     if (err != 0)
         perror("Невозможно создать поток!\n");
+
+    syslog(LOG_INFO, "Thread was created.");
     
     err = pthread_join(tid, NULL);
     if (err != 0)
