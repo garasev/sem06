@@ -78,7 +78,7 @@ void daemonize(const char *cmd)
 
     setsid();
 
-    // 4) Обеспечить возможность обретения управляющего терминала в будущем
+    // 4) Обеспечить не возможность обретения управляющего терминала в будущем
     sa.sa_handler = SIG_IGN;
     sigemptyset(&sa.sa_mask);
     sa.sa_flags = 0;
@@ -101,7 +101,7 @@ void daemonize(const char *cmd)
     fd1 = dup(0); //копируем файловый дискриптор
     fd2 = dup(0);
 
-    // 8. Инициализировать файл журнала
+    // 8. Инициализация daenom.log
     openlog(cmd, LOG_CONS, LOG_DAEMON);
     if (fd0 != 0 || fd1 != 1 || fd2 != 2)
     {
@@ -117,6 +117,7 @@ void *thr_fn(void *arg)
 
     for (;;)
     {
+        // Отлавливаем сигналы
         err = sigwait(&mask, &signo);
         if (err != 0)
         {
@@ -125,9 +126,10 @@ void *thr_fn(void *arg)
         }
         switch (signo)
         {
+        // Вывод логина
         case SIGHUP:
             tmp = getlogin();
-            syslog(LOG_INFO, "hi %s", tmp);
+            syslog(LOG_INFO, "Hi %s", tmp);
             break;
         case SIGTERM:
             syslog(LOG_INFO, "Получен сигнал SIGTERM, выход");
@@ -168,24 +170,26 @@ int main(int argc, char *argv[])
     sa.sa_handler = SIG_DFL;
     sigemptyset(&sa.sa_mask);
     sa.sa_flags = 0;
+
     if (sigaction(SIGHUP, &sa, NULL) < 0)
     {
         perror("Невозможно восстановить SIG_DFL для SIGHUP!\n");
         exit(1);
     }
+    // Установка маски для потока
     sigfillset(&mask);
     if ((err = pthread_sigmask(SIG_BLOCK, &mask, NULL)) != 0)
     {
         perror("Ошибка выполнения операции SIG_BLOCK!\n");
         exit(1);
     }
-
+    // Создание потока
     err = pthread_create(&tid, NULL, thr_fn, 0);
     if (err != 0)
         perror("Невозможно создать поток!\n");
     
     syslog(LOG_INFO, "Поток запущен");
-    
+    // Ожидание потока
     err = pthread_join(tid, NULL);
     if (err != 0)
         perror("Невозможно присоединить поток!\n");
