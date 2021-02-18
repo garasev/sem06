@@ -113,6 +113,7 @@ void daemonize(const char *cmd)
 void *thr_fn(void *arg)
 {
     int err, signo;
+    char* tmp;
 
     for (;;)
     {
@@ -125,7 +126,8 @@ void *thr_fn(void *arg)
         switch (signo)
         {
         case SIGHUP:
-            syslog(LOG_INFO, "hi");
+            tmp = getlogin();
+            syslog(LOG_INFO, "hi %s", tmp);
             break;
         case SIGTERM:
             syslog(LOG_INFO, "Получен сигнал SIGTERM, выход");
@@ -137,21 +139,9 @@ void *thr_fn(void *arg)
     return(0);
 }
 
-void sighup(int signo)
-{
-    syslog(LOG_INFO, "Получен сигнал sighup");
-}
-
-void sigterm(int signo)
-{
-    syslog(LOG_INFO, "Получен сигнал sigterm");
-}
-
 int main(int argc, char *argv[]) 
 {
     printf("pid: %d\n", getpid());
-
-    syslog(LOG_INFO, "Запуск программы демона!");
 
     int err;
     pthread_t tid;
@@ -175,32 +165,26 @@ int main(int argc, char *argv[])
         syslog(LOG_INFO, "Переход в режим демона!");
 
     // Установка обработчика сигналов
-    sa.sa_handler = sigterm;
+    sa.sa_handler = SIG_DFL;
     sigemptyset(&sa.sa_mask);
-    sigaddset(&sa.sa_mask, SIGTERM);
-    sa.sa_flags = 0;
-    if (sigaction(SIGTERM, &sa, NULL) < 0)
-    {
-        perror("Невозможно перехватить сигнал sigterm!\n");
-        exit(1);
-    }
-
-    sa.sa_handler = sighup;
-    sigemptyset(&sa.sa_mask);
-    sigaddset(&sa.sa_mask, SIGTERM);
     sa.sa_flags = 0;
     if (sigaction(SIGHUP, &sa, NULL) < 0)
     {
-        perror("Невозможно перехватить сигнал sighup!\n");
+        perror("Невозможно восстановить SIG_DFL для SIGHUP!\n");
         exit(1);
     }
-    syslog(LOG_INFO, "Установлена обрабка сигналов SIGHUP и SIGTERM");
+    sigfillset(&mask);
+    if ((err = pthread_sigmask(SIG_BLOCK, &mask, NULL)) != 0)
+    {
+        perror("Ошибка выполнения операции SIG_BLOCK!\n");
+        exit(1);
+    }
 
     err = pthread_create(&tid, NULL, thr_fn, 0);
     if (err != 0)
         perror("Невозможно создать поток!\n");
-
-    syslog(LOG_INFO, "Демон запущен");
+    
+    syslog(LOG_INFO, "Поток запущен");
     
     err = pthread_join(tid, NULL);
     if (err != 0)
