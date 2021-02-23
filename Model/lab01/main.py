@@ -56,6 +56,21 @@ def cop(poly):
     return tmp
 
 
+def init_pickard():
+    pool = []
+    pol = [Chlen(1, 2)]
+    integration(pol)
+    pool.append(cop(pol))
+
+    for i in range(3):
+        pol = f(pol)
+        pol.append(Chlen(1, 2))
+        integration(pol)
+        opt(pol)
+        pool.append(cop(pol))
+    return pool
+
+
 def calc_poly(pol, x, acc=3):
     res = 0
     for i in pol:
@@ -63,17 +78,34 @@ def calc_poly(pol, x, acc=3):
     return round(res, acc)
 
 
-pool = []
-pol = [Chlen(1, 2)]
-integration(pol)
-pool.append(cop(pol))
+def func(x, y):
+    return x * x + y * y
 
-for i in range(3):
-    pol = f(pol)
-    pol.append(Chlen(1, 2))
-    integration(pol)
-    opt(pol)
-    pool.append(cop(pol))
+
+def euler():
+    y = [0]
+    for i in range(1, len(x)):
+        y.append(y[i - 1] + step * func(x[i - 1], y[i - 1]))
+    return y
+
+
+def runge(a=0.5):
+    y = [0]
+    for i in range(1, len(x)):
+        k1 = func(x[i - 1], y[i - 1])
+        k2 = func(x[i - 1] + step / (2 * a), y[i - 1] + step / (2 * a) * k1)
+        y.append(y[i - 1] + step * ((1 - a) * k1 + a * k2))
+    return y
+
+
+def output(a):
+    if a > 10 ** 5:
+        return f'{a:>12.3e}'
+    else:
+        return f'{a:>12.3f}'
+
+
+pool = init_pickard()
 
 print(pool)
 for j in pool:
@@ -81,9 +113,31 @@ for j in pool:
     for i in j:
         print(i)
 
-step = 0.01
-i = 0
-width = 20
-while i < 10:
-    print(f'{round(i, 2):<5} |{calc_poly(pool[0], i):>10}|{calc_poly(pool[1], i):>15}|{calc_poly(pool[2], i):>20}|{calc_poly(pool[3], i):>25}|')
-    i += step
+step = 0.001
+x_min = 0
+x_max = 2.5
+i = x_min
+n = int((x_max - x_min) / step) + 1
+x = [x_min + i * step for i in range(n)]
+
+y_euler = euler()
+y_runge_1 = runge(a=0.5)
+y_runge_2 = runge(a=1)
+print('+{text1:-^5}+{text2:-^12}+{text3:-^12}+{text4:-^12}+{text5:-^12}+{text6:-^12}+{text7:-^12}+{text8:-^12}+'
+      .format(text1='-', text2='-', text3='-', text4='-', text5='-', text6='-', text7='-', text8='-'))
+print('|{text1:^5}|{text2:<12}|{text3:<12}|{text4:<12}|{text5:<12}|{text6:<12}|{text7:<12}|{text8:<12}|'
+      .format(text1='X', text2='Пикард 1', text3='Пикард 2', text4='Пикард 3',
+              text5='Пикард 4', text6='Эйлер', text7='Рунге a=0.5', text8='Рунге a=1'))
+print('+{text1:-^5}+{text2:-^12}+{text3:-^12}+{text4:-^12}+{text5:-^12}+{text6:-^12}+{text7:-^12}+{text8:-^12}+'
+      .format(text1='-', text2='-', text3='-', text4='-', text5='-', text6='-', text7='-', text8='-'))
+for i in range(n):
+    tmp = f'|{round(i * step, 3):<5}|'
+    for pol in pool:
+        tmp += f'{output(calc_poly(pol, i * step))}|'
+    tmp += f'{output(y_euler[int(i)])}|'
+    tmp += f'{output(y_runge_1[int(i)])}|'
+    tmp += f'{output(y_runge_2[int(i)])}|'
+    print(tmp)
+print('+{text1:-^5}+{text2:-^12}+{text3:-^12}+{text4:-^12}+{text5:-^12}+{text6:-^12}+{text7:-^12}+{text8:-^12}+'
+      .format(text1='-', text2='-', text3='-', text4='-', text5='-', text6='-', text7='-', text8='-'))
+
