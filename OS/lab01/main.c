@@ -2,17 +2,17 @@
 #include <stdlib.h>
 #include <fcntl.h>
 #include <sys/resource.h>
-#include <sys/stat.h> 
+#include <sys/stat.h>
 #include <unistd.h>
-#include <stdio.h> 
+#include <stdio.h>
 #include <signal.h>
-#include <string.h> 
-#include <errno.h> 
+#include <string.h>
+#include <errno.h>
 #include <sys/file.h>
 #include <pthread.h>
 
 #define LOCKFILE "home/garasev/sem06/OS/lab01/daemon.pid"
-#define LOCKMODE (S_IRUSR | S_IWUSR | S_IRGRP | S_IROTH) 
+#define LOCKMODE (S_IRUSR | S_IWUSR | S_IRGRP | S_IROTH)
 
 sigset_t mask;
 
@@ -63,14 +63,14 @@ void daemonize(const char *cmd)
     struct rlimit rl;
     struct sigaction sa;
 
-    // 1) Сбрасывание маски режима создания файла 
+    // 1) Сбрасывание маски режима создания файла
     umask(0);
 
-    // 2) Получение максимального возможного номера дискриптора 
+    // 2) Получение максимального возможного номера дискриптора
     if (getrlimit(RLIMIT_NOFILE, &rl) < 0)
         perror("Невозможно получить максимальный номер дискриптора!\n");
-    
-    // 3) Стать лидером новой сессии, чтобы утратить управляющий терминал 
+
+    // 3) Стать лидером новой сессии, чтобы утратить управляющий терминал
     if ((pid = fork()) < 0)
         perror("Ошибка функции fork!\n");
     else if (pid != 0) //родительский процесс
@@ -85,12 +85,12 @@ void daemonize(const char *cmd)
     if (sigaction(SIGHUP, &sa, NULL) < 0)
         perror("Невозможно игнорировать сигнал SIGHUP!\n");
 
-    // 5. Назначить корневой каталог текущим рабочим каталогом, 
-    // чтобы впоследствии можно было отмонтировать файловую систему 
+    // 5. Назначить корневой каталог текущим рабочим каталогом,
+    // чтобы впоследствии можно было отмонтировать файловую систему
     if (chdir("/") < 0)
         perror("Невозможно назначить корневой каталог текущим рабочим каталогом!\n");
-    
-    // 6. Закрыть все файловые дескрипторы 
+
+    // 6. Закрыть все файловые дескрипторы
     if (rl.rlim_max == RLIM_INFINITY)
         rl.rlim_max = 1024;
     for (int i = 0; i < rl.rlim_max; i++)
@@ -141,7 +141,7 @@ void *thr_fn(void *arg)
     return(0);
 }
 
-int main(int argc, char *argv[]) 
+int main(int argc, char *argv[])
 {
     printf("pid: %d\n", getpid());
 
@@ -157,7 +157,7 @@ int main(int argc, char *argv[])
 
     // Переход в режим демона
     daemonize(cmd);
-    // Блокировка файла для одной существующей копии демона 
+    // Блокировка файла для одной существующей копии демона
     if (already_running() != 0)
     {
         syslog(LOG_ERR, "Демон уже запущен!\n");
@@ -187,12 +187,12 @@ int main(int argc, char *argv[])
     err = pthread_create(&tid, NULL, thr_fn, 0);
     if (err != 0)
         perror("Невозможно создать поток!\n");
-    
+
     syslog(LOG_INFO, "Поток запущен");
     // Ожидание потока
     err = pthread_join(tid, NULL);
     if (err != 0)
         perror("Невозможно присоединить поток!\n");
-    
+
     return(0);
 }
