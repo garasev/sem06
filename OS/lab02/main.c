@@ -1,7 +1,13 @@
 #include <dirent.h>
 #include <limits.h>
 
-nt main(int argc, char *argv[])
+typedef int Myfunc(const char *, const struct stat *, int);
+
+static Myfunc myfunc;
+static int myftw(char *, Myfunc *);
+static int dopath(Myfunc *);
+
+int main(int argc, char *argv[])
 {
 	int ret;
 	if (argc != 2)

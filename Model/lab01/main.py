@@ -113,7 +113,7 @@ for j in pool:
     for i in j:
         print(i)
 
-step = 0.001
+step = 0.01
 x_min = 0
 x_max = 2.5
 i = x_min
