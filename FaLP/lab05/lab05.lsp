@@ -1,0 +1,5 @@
+(defun first_even (x) (if (= 0 (mod x 2)) x (+ x 1)))
+(defun abs_inc (x) (if (< x 0) (- x 1) (+ x 1)))
+(defun sorted_pair (a b) (if (< a b) (list a b) (list b a)))
+(defun middle_check (a b c) (if (or (and (< a b) (> a c)) (and (< a c) (> a b))) T Nil))
+(defun first_check (a b) (if (> b a) Nil T))
