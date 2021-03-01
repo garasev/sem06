@@ -1,94 +1,98 @@
+#include <stdio.h>
+#include <errno.h>
 #include <dirent.h>
 #include <limits.h>
-
-typedef int Myfunc(const char *, const struct stat *, int);
-
-static Myfunc myfunc;
-static int myftw(char *, Myfunc *);
-static int dopath(Myfunc *);
-
-int main(int argc, char *argv[])
-{
-	int ret;
-	if (argc != 2)
-        perror("Использование: ftw <начальный каталог>\n");
-	ret = myftw(argv[1], myfunc);
-	
-	return ret;
-}
+#include <string.h>
+#include <unistd.h>
+#include <stdlib.h>
+#include <sys/stat.h>
+#include <sys/types.h>
 
 #define FTW_F 1 // файл, не являющийся каталогом
 #define FTW_D 2 // каталог
 #define FTW_DNR 3 // каталог, который не доступен для чтения
-#define FTW_NS 4 // файл, информацию о котором невозможно получиться
+#define FTW_NS 4 // файл, информацию о котором невозможно получить
 
+typedef int Myfunc(const char *, const struct stat *, int);
 
+static Myfunc myfunc;
 static char *fullpath;
+static int dopath(const char *filename, int depth, Myfunc *);
 
-static int myftw(char *pathname, Myfunc *func)
+int main(int argc, char * argv[])
 {
-	int len;
+	int ret = -1; 
+	if (argc != 2)
+	{
+		printf("ERROR, wrong arguments.\nUse: ./app <dir>\n");
+		return(-1);
+	}
 	
-	fullpath = path_alloc(&len);
-	
-	strncpy(fullpath, pathname, len);
-	fullpath[len - 1] = 0;
-	
-	return(dopath(func));
+	ret = dopath(argv[1], 0, myfunc); //выполняет всю работу
+
+	printf("Finish");
+	return(ret);
 }
 
-static int dopath(Myfunc *func)
+static int dopath(const char *filename, int depth, Myfunc *myfunc)
 {
 	struct stat statbuf;
-	struct dirent *dirp;
+	struct dirent * dirp;
 	DIR *dp;
-	int ret;
-	char *ptr;
-	
-	if (lstat(fullpath, &statbuf) < 0)
-		return(func(fullpath, &statbuf, FTW_NS));
-	
-	if (S_ISDIR(statbuf.st_mode) == 0)
-		return(func(fullpath, &statbuf, FTW_F));
-	
-	if ((ret = func(fullpath, &statbuf, FTW_D)) != 0)
-		return ret;
-	ptr = fullpath + strlen(fullpath);
-	
-	*ptr++ = '/';
-	*ptr = 0;
-	
-	if ((dp = opendir(fullpath)) == NULL)
-		return(func(fullpath, &statbuf, FTW_DNR));
-	
-	while ((dirp = readdir(dp)) != NULL) {
-		if (strcmp(dirp->d_name, ".") == 0 ||
-			strcmp(dirp->d_name, "..") == 0)
-			continue;
-		
-		strcpy(ptr, dirp->d_name);
-		
-		if ((ret = dopath(func)) != 0)
-			break;		
-	} 
-	
-	ptr[-1] = 0;
-	
+	int ret = 0;
+
+	if (lstat(filename, &statbuf) < 0) // файл, информацию о котором невозможно получить  
+		return(myfunc(filename, &statbuf, FTW_NS));
+
+	for (int i = 0; i < depth; ++i)
+		printf("|\t");
+
+	if (S_ISDIR(statbuf.st_mode) == 0) // файл
+		return(myfunc(filename, &statbuf, FTW_F));
+
+	if ((ret = myfunc(filename, &statbuf, FTW_D)) != 0) // каталог
+		return(ret);
+
+	if ((dp = opendir(filename)) == NULL) // каталог недоступен
+		return(myfunc(filename, &statbuf, FTW_DNR));
+    
+	chdir(filename);
+	while ((dirp = readdir(dp)) != NULL && ret == 0)
+	{
+		if (strcmp(dirp->d_name, ".") != 0 &&
+			strcmp(dirp->d_name, "..") != 0 ) // пропуск каталогов . и ..
+		{
+			ret = dopath(dirp->d_name, depth + 1, myfunc);
+		}
+	}
+    
+	chdir("..");
+
 	if (closedir(dp) < 0)
-		perror("Невозможно закрыть каталог!\n");
-        return(1);
+		perror("Невозможно закрыть каталог");
+
+	return(ret);    
 }
 
-static int myfunc(const char *pathname, const struct stat *statptr, int type)
+static int myfunc(const char *pathame, const struct stat *statptr, int type)
 {
-	switch (type) {
-		case FTW_F:
-			printf("%s/file", pathname);
+	switch(type)
+	{
+		case FTW_F: 
+			printf( "-- %s\n", pathame);
 			break;
-		case FTW_D:
-			printf("%s", pathname);
-		default:
-			printf("ops");
+		case FTW_D: 
+			printf( "-- %s/\n", pathame);
+			break;
+		case FTW_DNR:
+			perror("К одному из каталогов закрыт доступ."); 
+			return(-1);
+		case FTW_NS:
+			perror("Ошибка функции stat."); 
+			return(-1);
+		default: 
+			perror("Неизвестый тип файла."); 
+			return(-1);
 	}
 	return(0);
 }
