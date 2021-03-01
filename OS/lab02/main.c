@@ -87,7 +87,7 @@ static int myfunc(const char *pathame, const struct stat *statptr, int type)
 		case FTW_DNR:
 			perror("К одному из каталогов закрыт доступ."); 
 			return(-1);
-		case FTW_NS:
+		case FTW_NS:	
 			perror("Ошибка функции stat."); 
 			return(-1);
 		default: 
