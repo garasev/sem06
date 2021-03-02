@@ -16,7 +16,6 @@
 typedef int Myfunc(const char *, const struct stat *, int);
 
 static Myfunc myfunc;
-static char *fullpath;
 static int dopath(const char *filename, int depth, Myfunc *);
 
 int main(int argc, char * argv[])
@@ -24,13 +23,12 @@ int main(int argc, char * argv[])
 	int ret = -1; 
 	if (argc != 2)
 	{
-		printf("ERROR, wrong arguments.\nUse: ./app <dir>\n");
+		printf("Ошибка аргумента. \n ./main <каталог>\n");
 		return(-1);
 	}
 	
 	ret = dopath(argv[1], 0, myfunc); //выполняет всю работу
 
-	printf("Finish");
 	return(ret);
 }
 
@@ -45,7 +43,7 @@ static int dopath(const char *filename, int depth, Myfunc *myfunc)
 		return(myfunc(filename, &statbuf, FTW_NS));
 
 	for (int i = 0; i < depth; ++i)
-		printf("|\t");
+		printf("|   ");
 
 	if (S_ISDIR(statbuf.st_mode) == 0) // файл
 		return(myfunc(filename, &statbuf, FTW_F));
@@ -69,7 +67,7 @@ static int dopath(const char *filename, int depth, Myfunc *myfunc)
 	chdir("..");
 
 	if (closedir(dp) < 0)
-		perror("Невозможно закрыть каталог");
+		perror("Ошибка невозможно закрыть каталог");
 
 	return(ret);    
 }
@@ -85,13 +83,13 @@ static int myfunc(const char *pathame, const struct stat *statptr, int type)
 			printf( "|- %s/\n", pathame);
 			break;
 		case FTW_DNR:
-			perror("К одному из каталогов закрыт доступ."); 
+			perror("Ошибка недостаточно доступа к каталогу"); 
 			return(-1);
 		case FTW_NS:	
-			perror("Ошибка функции stat."); 
+			perror("Ошибка недостаточно прав для функции stat"); 
 			return(-1);
 		default: 
-			perror("Неизвестый тип файла."); 
+			perror("Ошибка неизвестный тип файла"); 
 			return(-1);
 	}
 	return(0);
