@@ -1,4 +1,4 @@
-class Chlen:
+class Polynom:
     def __init__(self, k, d):
         self.k = k
         self.d = d
@@ -8,10 +8,10 @@ class Chlen:
         self.k /= self.d
 
     def __mul__(self, other):
-        if isinstance(other, Chlen):
-            return Chlen(k=other.k * self.k, d=other.d + self.d)
+        if isinstance(other, Polynom):
+            return Polynom(k=other.k * self.k, d=other.d + self.d)
         else:
-            return Chlen(k=other * self.k, d=self.d)
+            return Polynom(k=other * self.k, d=self.d)
 
     def __str__(self):
         return f'k = {self.k}, d = {self.d} \n'
@@ -52,19 +52,19 @@ def cop(poly):
     tmp = []
     for i in poly:
         k, d = i.cop()
-        tmp.append(Chlen(k, d))
+        tmp.append(Polynom(k, d))
     return tmp
 
 
-def init_pickard():
+def init_pickar():
     pool = []
-    pol = [Chlen(1, 2)]
+    pol = [Polynom(1, 2)]
     integration(pol)
     pool.append(cop(pol))
-
+    #
     for i in range(3):
         pol = f(pol)
-        pol.append(Chlen(1, 2))
+        pol.append(Polynom(1, 2))
         integration(pol)
         opt(pol)
         pool.append(cop(pol))
@@ -105,7 +105,7 @@ def output(a):
         return f'{a:>12.3f}'
 
 
-pool = init_pickard()
+pool = init_pickar()
 
 print(pool)
 for j in pool:
@@ -113,9 +113,10 @@ for j in pool:
     for i in j:
         print(i)
 
-step = 0.01
+step = 10 ** -5
 x_min = 0
-x_max = 2.5
+x_max = 2.01
+skip = 100
 i = x_min
 n = int((x_max - x_min) / step) + 1
 x = [x_min + i * step for i in range(n)]
@@ -126,11 +127,13 @@ y_runge_2 = runge(a=1)
 print('+{text1:-^5}+{text2:-^12}+{text3:-^12}+{text4:-^12}+{text5:-^12}+{text6:-^12}+{text7:-^12}+{text8:-^12}+'
       .format(text1='-', text2='-', text3='-', text4='-', text5='-', text6='-', text7='-', text8='-'))
 print('|{text1:^5}|{text2:<12}|{text3:<12}|{text4:<12}|{text5:<12}|{text6:<12}|{text7:<12}|{text8:<12}|'
-      .format(text1='X', text2='Пикард 1', text3='Пикард 2', text4='Пикард 3',
-              text5='Пикард 4', text6='Эйлер', text7='Рунге a=0.5', text8='Рунге a=1'))
+      .format(text1='X', text2='Пикар 1', text3='Пикар 2', text4='Пикар 3',
+              text5='Пикар 4', text6='Эйлер', text7='Рунге a=0.5', text8='Рунге a=1'))
 print('+{text1:-^5}+{text2:-^12}+{text3:-^12}+{text4:-^12}+{text5:-^12}+{text6:-^12}+{text7:-^12}+{text8:-^12}+'
       .format(text1='-', text2='-', text3='-', text4='-', text5='-', text6='-', text7='-', text8='-'))
 for i in range(n):
+    if i % skip:
+        continue
     tmp = f'|{round(i * step, 3):<5}|'
     for pol in pool:
         tmp += f'{output(calc_poly(pol, i * step))}|'

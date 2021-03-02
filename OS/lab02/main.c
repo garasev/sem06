@@ -79,10 +79,10 @@ static int myfunc(const char *pathame, const struct stat *statptr, int type)
 	switch(type)
 	{
 		case FTW_F: 
-			printf( "-- %s\n", pathame);
+			printf( "|- %s\n", pathame);
 			break;
 		case FTW_D: 
-			printf( "-- %s/\n", pathame);
+			printf( "|- %s/\n", pathame);
 			break;
 		case FTW_DNR:
 			perror("К одному из каталогов закрыт доступ."); 
