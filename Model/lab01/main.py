@@ -113,10 +113,10 @@ for j in pool:
     for i in j:
         print(i)
 
-step = 10 ** -5
+step = 10 ** -6
 x_min = 0
-x_max = 2.01
-skip = 100
+x_max = 2.1
+skip = 1000
 i = x_min
 n = int((x_max - x_min) / step) + 1
 x = [x_min + i * step for i in range(n)]
