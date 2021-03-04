@@ -37,15 +37,15 @@ static int dopath(const char *filename, int depth, Myfunc *myfunc)
 	struct stat statbuf;
 	struct dirent * dirp;
 	DIR *dp;
-	int ret = 0;
+	int ret = 0;	
 
-	if (lstat(filename, &statbuf) < 0) // файл, информацию о котором невозможно получить  
+	if (lstat(filename, &statbuf) < 0) // файл, информацию о котором невозможно получить с помощью lstat
 		return(myfunc(filename, &statbuf, FTW_NS));
 
 	for (int i = 0; i < depth; ++i)
 		printf("|   ");
 
-	if (S_ISDIR(statbuf.st_mode) == 0) // файл
+	if (S_ISDIR(statbuf.st_mode) == 0) // не каталог
 		return(myfunc(filename, &statbuf, FTW_F));
 
 	if ((ret = myfunc(filename, &statbuf, FTW_D)) != 0) // каталог
