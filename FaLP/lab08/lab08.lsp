@@ -49,3 +49,53 @@ lst :initial-value Nil))))
 (defun my_sort (lst)
 (cond ((null lst) Nil)
 	  (T (my_s lst Nil))))
+	  
+; Все числа на 10 уменьшить.
+(defun decr10 (lst)
+(mapcar (lambda (a) (- a 10)) lst))
+
+
+; Поиск первого не пустого списка.
+(defun find-list (lst)
+(find-if (lambda (a) (and (listp a) (not(null a)))) lst))
+
+
+; sum 
+(defun summa (lst) (summa-inner lst 0))
+(defun summa-inner (lst res)
+(reduce (lambda (res a) 
+	    (cond ((listp a) (summa-inner a res))
+			  ((numberp a) (+ res a))
+			  (T res))) lst :initial-value res))
+			  
+; for lab09
+(defun squadr (lst)
+(mapcar (lambda (a) 
+	    (cond ((listp a) (squadr a))
+			  ((numberp a) (* a a))
+		      (T a))) lst))
+
+; for lab10
+(defun select-odd (lst)
+(reduce (lambda (res a) 
+		(cond ((and (numberp a) (oddp a)) (append res (list a)))
+			  (T res))) lst :initial-value Nil))
+
+(defun select-even (lst)
+(reduce (lambda (res a) 
+		(cond ((and (numberp a) (evenp a)) (append res (list a)))
+			  (T res))) lst :initial-value Nil))
+
+(defun sum-all-odd (lst)
+(reduce (lambda (res a) 
+		(cond ((and (numberp a) (oddp a)) (+ res a))
+			  (T res))) lst :initial-value 0))
+
+(defun sum-all-even (lst)
+(reduce (lambda (res a) 
+		(cond ((and (numberp a) (evenp a)) (+ res a))
+			  (T res))) lst :initial-value 0))
+
+(defun cons-squad (lst)
+(cond ((null lst) Nil)
+	  (T (cons (* (car lst) (car lst)) (cons-squad (cdr lst))))))
