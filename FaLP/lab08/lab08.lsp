@@ -49,3 +49,20 @@ lst :initial-value Nil))))
 (defun my_sort (lst)
 (cond ((null lst) Nil)
 	  (T (my_s lst Nil))))
+
+; Все числа на 10 уменьшить.
+(defun decr10 (lst)
+(mapcar (lambda (a) (- a 10)) lst))
+
+; Поиск первого не пустого списка.
+(defun find-list (lst)
+(find-if (lambda (a) (and (listp a) (not(null a)))) lst))
+
+; sum
+(defun summa (lst) (summa-inner lst 0))
+(defun summa-inner (lst res)
+(reduce (lambda (res a)
+		(cond ((listp a) (summa-inner a res))
+			  ((numberp a) (+ res a))
+			  (T res))) 
+		lst :initial-value res))

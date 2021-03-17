@@ -55,7 +55,7 @@
 (defun first-to-last (lst)
 (my_revers (cons (car lst)(cdr (my_revers (cdr lst))))))
 (defun swap-first-last (lst)
-(cons (my_last lst) (swap-main lst)))
+(cons (my_last lst) (first-to-last lst)))
 
 ; swap-two-element
 (defun my_nth (lst n)
