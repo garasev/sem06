@@ -25,7 +25,9 @@ def f2(I):
 
 
 def f1(I, U):
-    return (U - (Rk + calcR(I)) * I) / Lk
+    # a = (U - (Rk + calcR(I)) * I) / Lk
+    a = (U - 0 * I) / Lk
+    return a
 
 
 def calcR(I):
@@ -133,7 +135,7 @@ if __name__ == '__main__':
     tab1 = rebuild(tab('table1.txt'))
     tab2 = rebuild(tab('table2.txt'))
 
-    tmax = 600 * 10**-6
+    tmax = 600 * 10**-5
     t0 = 0
     dt = 10**-6
     I = Io1
@@ -156,7 +158,8 @@ if __name__ == '__main__':
     plt.show()
     plt.plot(T_list, U_list)
     plt.show()
-    plt.plot(T_list[:-1], R_list[1::4])
-    plt.show()
-    plt.plot(T_list[:-1], RI_list[1::4])
-    plt.show()
+    if len(R_list) > 0:
+        plt.plot(T_list[:-7], R_list[24::4])
+        plt.show()
+        plt.plot(T_list[:-7], RI_list[24::4])
+        plt.show()
