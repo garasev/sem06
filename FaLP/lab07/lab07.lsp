@@ -55,7 +55,7 @@
 (defun first-to-last (lst)
 (my_revers (cons (car lst)(cdr (my_revers (cdr lst))))))
 (defun swap-first-last (lst)
-(cons (my_last lst) (swap-main lst)))
+(cons (my_last lst) (first-to-last lst)))
 
 ; swap-two-element
 (defun my_nth (lst n)
@@ -68,6 +68,15 @@
       ((eq (my_len res) b ) (append res (list (my_nth lst a))))
 	  (T (append res (list tmp)))))
 lst :initial-value Nil))
+
+(defun swap-two-element-rec (lst a b)
+(cond ((null lst) nil)
+	  (T (swap-two-element-rec-inner lst a b 0 lst))))
+(defun swap-two-element-rec-inner (lst a b n tmp)
+(cond ((null lst) nil)
+	  ((eq n a) (cons (my_nth tmp b) (swap-two-element-rec-inner (cdr lst) a b (+ 1 n) tmp)))
+	  ((eq n b) (cons (my_nth tmp a) (swap-two-element-rec-inner (cdr lst) a b (+ 1 n) tmp)))
+	  (T (cons (car lst) (swap-two-element-rec-inner (cdr lst) a b (+ 1 n) tmp)))))
 
 ; swap-to-left
 (defun swap-to-left (lst)

@@ -49,16 +49,24 @@ lst :initial-value Nil))))
 (defun my_sort (lst)
 (cond ((null lst) Nil)
 	  (T (my_s lst Nil))))
+<<<<<<< HEAD
 	  
+=======
+
+>>>>>>> cada34c1ec8af96c5378ba067382d28f48b9974b
 ; Все числа на 10 уменьшить.
 (defun decr10 (lst)
 (mapcar (lambda (a) (- a 10)) lst))
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> cada34c1ec8af96c5378ba067382d28f48b9974b
 ; Поиск первого не пустого списка.
 (defun find-list (lst)
 (find-if (lambda (a) (and (listp a) (not(null a)))) lst))
 
+<<<<<<< HEAD
 
 ; sum 
 (defun summa (lst) (summa-inner lst 0))
@@ -99,3 +107,13 @@ lst :initial-value Nil))))
 (defun cons-squad (lst)
 (cond ((null lst) Nil)
 	  (T (cons (* (car lst) (car lst)) (cons-squad (cdr lst))))))
+=======
+; sum
+(defun summa (lst) (summa-inner lst 0))
+(defun summa-inner (lst res)
+(reduce (lambda (res a)
+		(cond ((listp a) (summa-inner a res))
+			  ((numberp a) (+ res a))
+			  (T res))) 
+		lst :initial-value res))
+>>>>>>> cada34c1ec8af96c5378ba067382d28f48b9974b
