@@ -25,8 +25,8 @@ def f2(I):
 
 
 def f1(I, U):
-    # a = (U - (Rk + calcR(I)) * I) / Lk
-    a = (U - 0 * I) / Lk
+    a = (U - (Rk + calcR(I)) * I) / Lk
+    # a = (U - 0.25 * I) / Lk
     return a
 
 
@@ -38,7 +38,7 @@ def calcR(I):
 
 
 def integral(I):
-    return trapezoid(T, 0, 1, 10 ** -2, I)
+    return trapezoid(T, 0.01, 1, 10 ** -2, I)
 
 
 def tab(name):
@@ -70,7 +70,7 @@ Lk = 187 * 10**-6
 Ck = 268 * 10**-6
 Rk = 0.25
 Uco = 1400
-Io1 = 0.5
+Io1 = 3
 Tw = 2000
 
 
@@ -111,10 +111,6 @@ def newton(x, y):
     return p
 
 
-def squad(x):
-    return x*x
-
-
 def trapezoid(f, a, b, h, i):
     p = round((b - a) // h)
     s = 0
@@ -125,9 +121,6 @@ def trapezoid(f, a, b, h, i):
 
 
 def T(z, i):
-    temp = newton(tab2[0], tab2[1])
-    f_t = linear(tab1[0], tab1[1])
-    f_m = linear(tab1[1], tab1[2])
     return temp(f_t(i) + (Tw - f_t(i)) * z**f_m(f_t(i)))
 
 
@@ -135,7 +128,11 @@ if __name__ == '__main__':
     tab1 = rebuild(tab('table1.txt'))
     tab2 = rebuild(tab('table2.txt'))
 
-    tmax = 600 * 10**-5
+    temp = newton(tab2[0], tab2[1])
+    f_t = linear(tab1[0], tab1[1])
+    f_m = linear(tab1[1], tab1[2])
+
+    tmax = 800 * 10**-6
     t0 = 0
     dt = 10**-6
     I = Io1
@@ -153,13 +150,29 @@ if __name__ == '__main__':
         I_list.append(I)
         U_list.append(U)
         T_list.append(t0)
-    print(len(R_list), len(R_list[1::4]), len(T_list))
+    print(len(I_list), len(T_list), len(T_list))
     plt.plot(T_list, I_list)
+    I_mid = 0.35 * max(I_list)
+    t_start = 0
+    t_end = 0
+    i = 0
+    while I_list[i] < I_mid:
+        i += 1
+    t_start = T_list[i]
+    while I_list[i] > I_mid:
+        i += 1
+    t_end = T_list[i]
+    print('Max:', max(I_list))
+    print('0.35 I:', 0.35 * max(I_list))
+    print('start:', t_start * 10**6)
+    print('end:', t_end * 10**6)
+    print('dt', (t_end - t_start) * 10**6)
+    plt.plot(T_list, [0.35 * max(I_list)] * len(T_list))
     plt.show()
-    plt.plot(T_list, U_list)
-    plt.show()
-    if len(R_list) > 0:
-        plt.plot(T_list[:-7], R_list[24::4])
-        plt.show()
-        plt.plot(T_list[:-7], RI_list[24::4])
-        plt.show()
+    # plt.plot(T_list, U_list)
+    # plt.show()
+    # if len(R_list) > 0:
+    #     plt.plot(T_list[:-7], R_list[24::4])
+    #     plt.show()
+    #     plt.plot(T_list[:-7], RI_list[24::4])
+    #     plt.show()
