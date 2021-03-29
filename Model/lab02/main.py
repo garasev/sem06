@@ -25,8 +25,8 @@ def f2(I):
 
 
 def f1(I, U):
-    a = (U - (Rk + calcR(I)) * I) / Lk
-    # a = (U - 0.25 * I) / Lk
+    # a = (U - (Rk + calcR(I)) * I) / Lk
+    a = (U - 0.25 * I) / Lk
     return a
 
 
@@ -68,7 +68,7 @@ R = 0.35
 l = 12
 Lk = 187 * 10**-6
 Ck = 268 * 10**-6
-Rk = 0.25
+Rk = 0.25 * 2
 Uco = 1400
 Io1 = 3
 Tw = 2000
@@ -132,7 +132,9 @@ if __name__ == '__main__':
     f_t = linear(tab1[0], tab1[1])
     f_m = linear(tab1[1], tab1[2])
 
-    tmax = 800 * 10**-6
+    print(temp(2000))
+else:
+    tmax = 3000 * 10**-6
     t0 = 0
     dt = 10**-6
     I = Io1
@@ -169,10 +171,10 @@ if __name__ == '__main__':
     print('dt', (t_end - t_start) * 10**6)
     plt.plot(T_list, [0.35 * max(I_list)] * len(T_list))
     plt.show()
-    # plt.plot(T_list, U_list)
-    # plt.show()
-    # if len(R_list) > 0:
-    #     plt.plot(T_list[:-7], R_list[24::4])
-    #     plt.show()
-    #     plt.plot(T_list[:-7], RI_list[24::4])
-    #     plt.show()
+    plt.plot(T_list, U_list)
+    plt.show()
+    if len(R_list) > 0:
+        plt.plot(T_list[:-7], R_list[24::4])
+        plt.show()
+        plt.plot(T_list[:-7], RI_list[24::4])
+        plt.show()
