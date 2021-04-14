@@ -1,0 +1,103 @@
+x = [-0.68,0.71,2.27,0.38,0.14,0.06,1.21,-0.59,0.44,1.98,1.00,-0.88,-0.08,1.87,-0.74,0.83,-1.45,0.58,0.48,3.26,0.02,0.26,2.96,1.78,0.58,0.08,-1.60,1.26,1.28,-0.36,0.15,-0.38,-1.04,0.95,-2.17,-0.30,1.09,0.39,1.06,0.98,-2.55,2.62,-1.58,3.75,-1.43,0.92,2.75,-0.55,1.48,-0.96,0.50,2.67,-0.58,0.41,-0.46,-0.48,1.68,-0.08,1.76,0.08,-1.15,0.66,1.54,0.17,-0.20,1.34,1.08,1.59,-0.05,0.15,-0.35,0.58,-0.87,1.73,-0.27,0.00,-0.67,0.13,1.75,-0.59,1.31,1.20,0.53,0.14,-0.35,1.00,-0.01,0.21,1.58,-0.02,1.28,1.34,-1.66,0.30,0.08,0.66,-0.26,1.54,1.22,1.24,0.11,0.79,-0.83,1.41,0.17,0.55,1.60,1.26,1.06,0.39,-0.77,1.49,0.92,-1.58,1.19,0.13,0.26,-2.14,0.08,-1.75];
+n = length(x);
+
+x = sort(x);
+
+Mmax = max(x);
+Mmin = min(x);
+
+fprintf("Mmin = %f \n", Mmin);
+fprintf("Mmin = %f \n", Mmin);
+
+R = Mmax - Mmin;
+fprintf("R = %f \n", R);
+
+mu = getMU(x, n);
+fprintf("MU = %f \n", mu);
+
+s2 = getS2(x, n, mu);
+fprintf("S2 = %f \n", s2);
+
+m = floor(log2(n)) + 2;
+fprintf("m = %d \n", m);
+
+group(x, m);
+hold on;
+dd(x, mu, s2, m);
+
+figure;
+empiric(x);
+hold on;
+distribution(x, mu, s2, m);
+
+function mu = getMU(x, n)
+  mu = sum(x) / n;
+end
+
+function S2 = getS2(x, n, mu)
+    S2 = sum((x - mu).^2) / (n - 1);
+end
+
+function group(x, m)
+    n = length(x);
+    Mmax = max(x);
+    Mmin = min(x);
+    R = Mmax - Mmin;
+    
+    interval_value = zeros(1, m+1);
+    interval_count = zeros(1, m+1);
+    d = R / m;
+    
+    for i = 0: m
+        interval_value(i + 1) = x(1) + d * i;
+    end
+    
+    j = 1;
+    for i = 1: n
+       if (x(i) >= interval_value(j + 1)) 
+           j = j + 1;
+       end
+       interval_count(j) = interval_count(j) + 1;
+    end
+    
+    for i = 1: m - 1
+       fprintf("[%5.2f; %5.2f) - %d\n", interval_value(i), interval_value(i + 1), interval_count(i)); 
+    end
+    fprintf("[%5.2f; %5.2f] - %d\n", interval_value(m), interval_value(m + 1), interval_count(m)); 
+    
+    graph = interval_count(1:m+1);
+    for i = 1: m + 1
+        graph(i) = interval_count(i) / (n * d);
+    end
+    
+    stairs(interval_value, graph),grid;
+end
+
+function dd(x, mx, dx, m)
+    Mmax = max(x);
+    Mmin = min(x);
+    r = Mmax - Mmin;
+    d = r / m;
+    sigma = sqrt(dx);
+    
+    xn = (mx - r): d/50: (mx + r);
+    y = normpdf(xn, mx, sigma);
+    plot(xn, y), grid;
+end
+
+function empiric(x)
+    [yy, xx] = ecdf(x);
+    
+    stairs(xx, yy), grid;
+end
+
+function distribution(x, mx, dx, m)
+    Mmax = max(x);
+    Mmin = min(x);
+    r = Mmax - Mmin;
+    d = r / m;
+    
+    xn = (mx - r): d: (mx + r);
+    y = 1/2 * (1 + erf((xn - mx) / sqrt(2 * dx)));
+    plot(xn, y), grid;
+end
