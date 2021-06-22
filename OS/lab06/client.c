@@ -21,7 +21,7 @@ int main(void)
     strcpy(server_addr.sa_data, SOCKET_NAME);
 
     char msg[MSG_LEN]; 
-    sprintf(msg, "Hello from client with pid %d\n", getpid());
+    sprintf(msg, "Client with pid send msg %d\n", getpid());
     sendto(sockfd, msg, strlen(msg), 0, &server_addr, sizeof(server_addr));
 
     close(sockfd);
