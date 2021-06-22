@@ -1,0 +1,190 @@
+
+______________________________
+CMDLINE
+
+./test
+
+______________________________
+CWD
+
+/home/garasev/sem06/OS/lab04
+
+______________________________
+FD
+
+0 -> /dev/pts/0
+1 -> /dev/pts/0
+2 -> /dev/pts/0
+
+______________________________
+ENVIRON
+
+SHELL=/bin/bash
+SESSION_MANAGER=local/garasev-Aspire-A315-55G:@/tmp/.ICE-unix/1420,unix/garasev-Aspire-A315-55G:/tmp/.ICE-unix/1420
+QT_ACCESSIBILITY=1
+COLORTERM=truecolor
+XDG_CONFIG_DIRS=/etc/xdg/xdg-ubuntu:/etc/xdg
+XDG_SESSION_PATH=/org/freedesktop/DisplayManager/Session1
+XDG_MENU_PREFIX=gnome-
+GNOME_DESKTOP_SESSION_ID=this-is-deprecated
+GNOME_SHELL_SESSION_MODE=ubuntu
+SSH_AUTH_SOCK=/run/user/1000/keyring/ssh
+XMODIFIERS=@im=ibus
+DESKTOP_SESSION=ubuntu
+SSH_AGENT_PID=1372
+GTK_MODULES=gail:atk-bridge
+DBUS_ST
+RTER_BUS_TYPE=session
+PWD=/home/garasev/sem06/OS/lab04
+LOGNAME=garasev
+XDG_SESSION_DESKTOP=ubuntu:GNOME
+XDG_SESSION_TYPE=x11
+GPG_AGENT_INFO=/run/user/1000/gnupg/S.gpg-agent:0:1
+XAUTHORITY=/home/garasev/.Xauthority
+HOME=/home/garasev
+IM_CONFIG_PHASE=1
+LANG=ru_RU.UTF-8
+LS_COLORS=rs=0:di=01;34:ln=01;36:mh=00:pi=40;33:so=01;35:do=01;35:bd=40;33;01:cd=40;33;01:or=40;31;01:mi=00:su=37;41:sg=30;43:ca=30;41:tw=30;42:ow=34;42:st=37;44:ex=01;32:*.tar=01;31:*.tgz=01;31:*.arc=01;31:*.arj=01;31:*.taz=01;31:*.lha=01;31:
+.lz4=01;31:*.lzh=01;31:*.lzma=01;31:*.tlz=01;31:*.txz=01;31:*.tzo=01;31:*.t7z=01;31:*.zip=01;31:*.z=01;31:*.dz=01;31:*.gz=01;31:*.lrz=01;31:*.lz=01;31:*.lzo=01;31:*.xz=01;31:*.zst=01;31:*.tzst=01;31:*.bz2=01;31:*.bz=01;31:*.tbz=01;31:*.tbz2=01;31:*.tz=01;31:*.deb=01;31:*.rpm=01;31:*.jar=01;31:*.war=01;31:*.ear=01;31:*.sar=01;31:*.rar=01;31:*.alz=01;31:*.ace=01;31:*.zoo=01;31:*.cpio=01;31:*.7z=01;31:*.rz=01;31:*.cab=01;31:*.wim=01;31:*.swm=01;31:*.dwm=01;31:*.esd=01;31:*.jpg=01;35:*.jpeg=01;35:*.mjpg=01;35:
+.mjpeg=01;35:*.gif=01;35:*.bmp=01;35:*.pbm=01;35:*.pgm=01;35:*.ppm=01;35:*.tga=01;35:*.xbm=01;35:*.xpm=01;35:*.tif=01;35:*.tiff=01;35:*.png=01;35:*.svg=01;35:*.svgz=01;35:*.mng=01;35:*.pcx=01;35:*.mov=01;35:*.mpg=01;35:*.mpeg=01;35:*.m2v=01;35:*.mkv=01;35:*.webm=01;35:*.ogm=01;35:*.mp4=01;35:*.m4v=01;35:*.mp4v=01;35:*.vob=01;35:*.qt=01;35:*.nuv=01;35:*.wmv=01;35:*.asf=01;35:*.rm=01;35:*.rmvb=01;35:*.flc=01;35:*.avi=01;35:*.fli=01;35:*.flv=01;35:*.gl=01;35:*.dl=01;35:*.xcf=01;35:*.xwd=01;35:*.yuv=01;35:*.cg
+=01;35:*.emf=01;35:*.ogv=01;35:*.ogx=01;35:*.aac=00;36:*.au=00;36:*.flac=00;36:*.m4a=00;36:*.mid=00;36:*.midi=00;36:*.mka=00;36:*.mp3=00;36:*.mpc=00;36:*.ogg=00;36:*.ra=00;36:*.wav=00;36:*.oga=00;36:*.opus=00;36:*.spx=00;36:*.xspf=00;36:
+XDG_CURRENT_DESKTOP=ubuntu:GNOME
+VTE_VERSION=6003
+XDG_SEAT_PATH=/org/freedesktop/DisplayManager/Seat0
+GNOME_TERMINAL_SCREEN=/org/gnome/Terminal/screen/8a373e29_33b2_4e5c_aebc_67885e71a2a9
+INVOCATION_ID=6133cce2568d4ab2a7791d25e4f7fbf3
+MANAGERPID=1243
+LESSCLOSE=/usr/bin/les
+pipe %s %s
+XDG_SESSION_CLASS=user
+TERM=xterm-256color
+LESSOPEN=| /usr/bin/lesspipe %s
+USER=garasev
+GNOME_TERMINAL_SERVICE=:1.102
+DISPLAY=:0
+SHLVL=1
+QT_IM_MODULE=ibus
+DBUS_STARTER_ADDRESS=unix:path=/run/user/1000/bus,guid=65157337d7e03137d0069ace6077f3ed
+XDG_RUNTIME_DIR=/run/user/1000
+JOURNAL_STREAM=9:36314
+XDG_DATA_DIRS=/usr/share/ubuntu:/usr/local/share:/usr/share:/var/lib/snapd/desktop
+PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin
+DBUS_SESSION_BUS
+ADDRESS=unix:path=/run/user/1000/bus,guid=65157337d7e03137d0069ace6077f3ed
+_=./test
+
+______________________________
+EXE
+
+/home/garasev/sem06/OS/lab04/test
+
+______________________________
+MAPS
+
+56459de59000-56459de5a000 r--p 00000000 103:05 3674263                   /home/garasev/sem06/OS/lab04/test
+56459de5a000-56459de5b000 r-xp 00001000 103:05 3674263                   /home/garasev/sem06/OS/lab04/test
+56459de5b000-56459de5c000 r--p 00002000 103:05 3674263                   /home/garasev/sem06/OS/lab04/test
+56459de5c000-56459de5d000 r--p 00002000 103:05 3674263                   /home/garasev/sem06/OS/lab04/test
+56459de5d000-56459de5e000 rw-p 00003000 103:05 3674263                   /home/gara
+ev/sem06/OS/lab04/test
+56459ef15000-56459ef36000 rw-p 00000000 00:00 0                          [heap]
+7fb5e8fd8000-7fb5e8fdb000 rw-p 00000000 00:00 0 
+7fb5e8fdb000-7fb5e9000000 r--p 00000000 103:05 526466                    /usr/lib/x86_64-linux-gnu/libc-2.31.so
+7fb5e9000000-7fb5e9178000 r-xp 00025000 103:05 526466                    /usr/lib/x86_64-linux-gnu/libc-2.31.so
+7fb5e9178000-7fb5e91c2000 r--p 0019d000 103:05 526466                    /usr/lib/x86_64-linux-gnu/libc-2.31.so
+7fb5e91c2000-7fb5e91c30
+0 ---p 001e7000 103:05 526466                    /usr/lib/x86_64-linux-gnu/libc-2.31.so
+7fb5e91c3000-7fb5e91c6000 r--p 001e7000 103:05 526466                    /usr/lib/x86_64-linux-gnu/libc-2.31.so
+7fb5e91c6000-7fb5e91c9000 rw-p 001ea000 103:05 526466                    /usr/lib/x86_64-linux-gnu/libc-2.31.so
+7fb5e91c9000-7fb5e91cd000 rw-p 00000000 00:00 0 
+7fb5e91cd000-7fb5e91dc000 r--p 00000000 103:05 526468                    /usr/lib/x86_64-linux-gnu/libm-2.31.so
+7fb5e91dc000-7fb5e9283000 r-xp 0000f00
+ 103:05 526468                    /usr/lib/x86_64-linux-gnu/libm-2.31.so
+7fb5e9283000-7fb5e931a000 r--p 000b6000 103:05 526468                    /usr/lib/x86_64-linux-gnu/libm-2.31.so
+7fb5e931a000-7fb5e931b000 r--p 0014c000 103:05 526468                    /usr/lib/x86_64-linux-gnu/libm-2.31.so
+7fb5e931b000-7fb5e931c000 rw-p 0014d000 103:05 526468                    /usr/lib/x86_64-linux-gnu/libm-2.31.so
+7fb5e931c000-7fb5e931e000 rw-p 00000000 00:00 0 
+7fb5e9332000-7fb5e9333000 r--p 00000000 103:05 526461
+                   /usr/lib/x86_64-linux-gnu/ld-2.31.so
+7fb5e9333000-7fb5e9356000 r-xp 00001000 103:05 526461                    /usr/lib/x86_64-linux-gnu/ld-2.31.so
+7fb5e9356000-7fb5e935e000 r--p 00024000 103:05 526461                    /usr/lib/x86_64-linux-gnu/ld-2.31.so
+7fb5e935f000-7fb5e9360000 r--p 0002c000 103:05 526461                    /usr/lib/x86_64-linux-gnu/ld-2.31.so
+7fb5e9360000-7fb5e9361000 rw-p 0002d000 103:05 526461                    /usr/lib/x86_64-linux-gnu/ld-2.31.so
+7fb5e9361000-7f
+5e9362000 rw-p 00000000 00:00 0 
+7ffe9f85b000-7ffe9f87c000 rw-p 00000000 00:00 0                          [stack]
+7ffe9f938000-7ffe9f93b000 r--p 00000000 00:00 0                          [vvar]
+7ffe9f93b000-7ffe9f93c000 r-xp 00000000 00:00 0                          [vdso]
+ffffffffff600000-ffffffffff601000 --xp 00000000 00:00 0                  [vsyscall]
+
+______________________________
+ROOT
+
+/
+
+______________________________
+STAT 
+
+
+            pid:	 3432
+       filename:	 (test)
+          state:	 R
+           ppid:	 2863
+            gid:	 3432
+        session:	 2863
+         tty_nr:	 34819
+         tp_gid:	 3432
+          flags:	 4194304
+         minflt:	 94
+        cminflt:	 0
+         majflt:	 0
+        cmajflt:	 0
+          utime:	 14497
+          stime:	 2
+         cutime:	 0
+         cstime:	 0
+       priority:	 20
+           nice:	 0
+    num_threads:	 1
+    itrealvalue:	 0
+    start_tiime:	 133469
+          vsize:	 3932160
+            rss:	 213
+         rsslim:	 18446744073709551615
+      startcode:	 94857001799680
+        endcode:	 94857001804581
+     startstack:	 140731574887968
+        kstkesp:	 0
+        kstkeip:	 0
+         signal:	 0
+        blocked:	 0
+      sigignore:	 0
+       sigcatch:	 0
+          wchan:	 0
+          nswap:	 0
+         cnswap:	 0
+    exit_signal:	 17
+      processor:	 0
+    rt_priority:	 0
+         policy:	 0
+delayacct_blkio_tics:	 0
+     quest_time:	 0
+    cquest_time:	 0
+     start_data:	 94857001815440
+       end_data:	 94857001816080
+      start_brk:	 94857019346944
+      arg_start:	 140731574891414
+        arg_end:	 140731574891421
+      env_start:	 140731574891421
+        env_end:	 140731574894577
+______________________________
+STATM 
+
+
+           size:	 960
+       resident:	 213
+         shared:	 193
+           text:	 2
+            lib:	 0
+           data:	 82
+             dt:	 0

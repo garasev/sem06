@@ -6,13 +6,13 @@
 
 
 MODULE_LICENSE("GPL");
-MODULE_AUTHOR("Dmitry Kulikov");
+MODULE_AUTHOR("Garasev");
 MODULE_DESCRIPTION("Lab3");
 
 
 /* Init-функция, вызываемая при загрузке модуля */
 static int __init my_module_init(void) {
-	printk(KERN_INFO "LAB3: Module is loaded. Hello world!\n");
+	printk(KERN_INFO "LAB3: Module is loaded.\n");
 	struct task_struct *task = &init_task;
 
 	do {
@@ -27,7 +27,7 @@ static int __init my_module_init(void) {
 
 /* функция, вызываемая при выгрузке модуля */
 static void __exit my_module_exit(void) {
-	printk(KERN_INFO "LAB3: Module is unloaded. Good bye.\n");
+	printk(KERN_INFO "LAB3: Module is unloaded.\n");
 }
 
 

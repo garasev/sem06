@@ -3,9 +3,9 @@
 #include "md.h" 
 
 MODULE_LICENSE("GPL");
-MODULE_AUTHOR("Dmitry Kulikov");
+MODULE_AUTHOR("Garasev");
 
-char* md1_data = "Hello world!"; 
+char* md1_data = "<It's md1_data>"; 
 
 extern char* md1_proc(void) 
 { 

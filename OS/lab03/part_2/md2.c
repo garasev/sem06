@@ -3,7 +3,7 @@
 #include "md.h" 
 
 MODULE_LICENSE("GPL");
-MODULE_AUTHOR("Dmitry Kulikov");
+MODULE_AUTHOR("Garasev");
 
 static int __init md_init(void) 
 { 
