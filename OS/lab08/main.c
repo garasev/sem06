@@ -129,7 +129,7 @@ static void __exit myfs_exit(void)
 }
 
 MODULE_LICENSE("GPL");
-MODULE_AUTHOR("Sushina Anastasia");
+MODULE_AUTHOR("Garasev");
 
 module_init(myfs_init);
 module_exit(myfs_exit);

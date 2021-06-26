@@ -1,5 +1,5 @@
 ifneq ($(KERNELRELEASE),)
-	obj-m := slab.o
+	obj-m := main.o
 else
 	CURRENT = $(shell uname -r)
 	KDIR = /lib/modules/$(CURRENT)/build
