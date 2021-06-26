@@ -35,11 +35,11 @@ static int proc_tasklet_open(struct inode *inode, struct file *file)
    return single_open(file, proc_tasklet_show, NULL);
 }
 
-static const struct proc_ops proc_tasklet_fops=
+static const struct file_operations proc_tasklet_fops=
 {
-   .proc_open = proc_tasklet_open, // функцию, которую мы сами определили
-   .proc_release = single_release, 
-   .proc_read = seq_read,
+   .open = proc_tasklet_open, // функцию, которую мы сами определили
+   .release = single_release, 
+   .read = seq_read,
 };
 
 void my_tasklet_func(unsigned long data)

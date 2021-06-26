@@ -47,10 +47,10 @@ static int my_proc_open(struct inode *inode, struct file *file)
   return single_open(file, my_proc_show, NULL);
 }
 
-static struct proc_ops props = {
-    .proc_open = my_proc_open,
-    .proc_release = single_release,
-    .proc_read = seq_read,
+static struct file_operations props = {
+    .open = my_proc_open,
+    .release = single_release,
+    .read = seq_read,
 };
 
 void my_func_1(struct work_struct *work)
