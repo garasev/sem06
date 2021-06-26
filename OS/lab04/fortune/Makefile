@@ -1,5 +1,5 @@
 ifneq ($(KERNELRELEASE),)
-	obj-m := f421.o
+	obj-m := f422.o
 else
 	CURRENT = $(shell uname -r)
 	KDIR = /lib/modules/$(CURRENT)/build
